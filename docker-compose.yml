@@ -1,0 +1,71 @@
+version: '3.8'
+
+networks:
+ custom_network:
+
+services:
+  nginx-your-project:
+    build: ./docker/NginxFile
+    container_name: nginx-your-project
+    ports:
+      - ${LOCAL_WEB_PORT}:${APP_WEB_PORT}
+    volumes:
+      - ./docker/Nginx/core:/etc/nginx/
+      - ${LOCAL_PATH_HOST}:${APP_PATH}
+      - ./docker/Nginx/Logs:/var/log/nginx/
+      - ./docker/Nginx/html:/usr/share/nginx/html/
+    links:
+      - php-your-project
+    depends_on:
+      - php-your-project
+      - redis-your-project
+      - db-your-project
+      - npm-your-project
+    networks:
+      - custom_network
+
+  php-your-project:
+    build: ./docker/PHP8
+    container_name: php-your-project
+    volumes:
+      - ${LOCAL_PATH_HOST}:${APP_PATH}:cached
+      - ./docker/PHP8/php.ini:/usr/local/etc/php/conf.d/php-custom.ini
+    networks:
+      - custom_network
+
+  redis-your-project:
+    image: redis:4.0.5-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    container_name: redis-your-project
+    ports:
+      - ${LOCAL_REDIS_PORT}:${APP_REDIS_PORT}
+    networks:
+      - custom_network
+
+  db-your-project:
+    image: mariadb:latest
+    container_name: db-your-project
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+    volumes:
+      - ./docker/MySQL:/var/lib/mysql
+      - ./docker/dump:/docker-entrypoint-initdb.d
+    ports:
+      - ${LOCAL_MYSQL_PORT}:${APP_MYSQL_PORT}
+    mem_limit: 2g
+    networks:
+      - custom_network
+
+  npm-your-project:
+    image: node:alpine
+    container_name: npm-your-project
+    volumes:
+      - ${LOCAL_PATH_HOST}:${APP_PATH}:cached
+      - ${LOCAL_PATH_HOST}.env:${APP_PATH}/.env
+    working_dir: ${APP_PATH}
+    profiles: ["npm"]
+    entrypoint: ['npm']
+    ports:
+      - ${VITE_PORT}:${VITE_PORT}
+    networks:
+      - custom_network
