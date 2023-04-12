@@ -45,6 +45,10 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 #Install supervisor
 #RUN apt-get install -y supervisor
 
+ARG docker_user
+ENV user=${docker_user}
+RUN useradd -o -u 1000 -g www-data -m -s /bin/bash ${user}
+
 RUN chown -R www-data:www-data /var/www/
 RUN chmod 777 -R /tmp && chmod o+t -R /tmp
 

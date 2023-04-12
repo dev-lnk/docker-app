@@ -18,18 +18,20 @@ services:
       - php-your-project
     depends_on:
       - php-your-project
-      - redis-your-project
-      - db-your-project
-      - npm-your-project
     networks:
       - custom_network
 
   php-your-project:
-    build: ./docker/PHP8
+    build:
+      context: ./docker/PHP8
+      args:
+        docker_user: ${DOCKER_USER}
     container_name: php-your-project
     volumes:
       - ${LOCAL_PATH_HOST}:${APP_PATH}:cached
       - ./docker/PHP8/php.ini:/usr/local/etc/php/conf.d/php-custom.ini
+    depends_on:
+      - db-your-project
     networks:
       - custom_network
 
@@ -52,7 +54,6 @@ services:
       - ./docker/dump:/docker-entrypoint-initdb.d
     ports:
       - ${LOCAL_MYSQL_PORT}:${APP_MYSQL_PORT}
-    mem_limit: 2g
     networks:
       - custom_network
 
