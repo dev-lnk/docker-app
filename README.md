@@ -14,20 +14,39 @@
 
 Установка laravel:
 
-9) Выполнить базовую установку laravel проекта
-10) Скопировать папку docker и docker-compose.yml в проект laravel (предварительно удалить папку docker/MySQL если она есть)
-11) Добавить в .env настройки docker
-12) Настроить подключение к БД, например:
-
+9) Установить laravel в любую папку контейнера php, но не в /var/www/your-project, например /var/www/laravel
+10) Скопировать всё из /var/www/laravel в /var/www/your-project c заменой .env (предварительно добавив в .env настройки docker), Readme.md и .gitignore
+11) Настроить подключение к БД и redis, например:
+````
     DB_CONNECTION=mysql
     DB_HOST=db-your-project #название контейнера из docker-compose.yml
     DB_PORT=3306
     DB_DATABASE=my_database
     DB_USERNAME=my_database
     DB_PASSWORD=12345
-
+````
 13) Изменить APP_URL в .env
 14) Запустить docker-compose up --build -d, построитcя проект с laravel
 
-Пересобрать контейнер
-docker-compose up -d --force-recreate --no-deps --build service_name
+Пересобрать контейнер<br> 
+<code>docker-compose up -d --force-recreate --no-deps --build service_name</code>
+
+Для работы vite необходимо добавить в vite.config.js:
+
+````
+export default defineConfig({
+    server: {
+        host: '0.0.0.0',
+        hmr: {
+            host: 'localhost',
+        }
+    },
+    ...
+````
+
+<p>NPM (работа из консоли)</p>
+<code>docker-compose run --rm npm-your-project install</code><br>
+<code>docker-compose run --rm npm-your-project run build</code><br>
+<code>docker-compose run --rm --service-ports npm-your-project run dev --host</code><br>
+
+
