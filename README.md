@@ -1,5 +1,5 @@
 Установка:
-1) По желанию, заменить порты в .env напротив комментария #EDIT PORT
+1) .env.example -> .env 
 2) .env - указать путь до проекта APP_PATH
 3) docker/PHP8/Dockerfile - указать WORKDIR такой же как APP_PATH
 4) docker-compose.yml - Заменить custom_network если нужно

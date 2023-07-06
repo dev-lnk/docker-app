@@ -1,60 +1,70 @@
-FROM php:8.1-fpm
+FROM php:8.1-fpm-alpine
 
-RUN apt-get update
-RUN apt-get install -y wget
-RUN apt-get install -y curl
-RUN apt-get install -y git
-RUN apt-get install -y bash
-RUN apt-get install -y vim
-RUN apt-get install -y zip unzip
-RUN apt-get install -y libfreetype6-dev
-RUN apt-get install -y libjpeg62-turbo-dev
-RUN apt-get install -y libicu-dev
-RUN apt-get install -y libmcrypt4
-RUN apt-get install -y libmcrypt-dev
-RUN apt-get install -y libpng-dev
-RUN apt-get install -y zlib1g-dev
-RUN apt-get install -y libxml2-dev
-RUN apt-get install -y libzip-dev
-RUN apt-get install -y libonig-dev
-RUN apt-get install -y libcurl4-openssl-dev
-RUN apt-get install -y libldap2-dev
-RUN apt-get install -y libpq-dev
+RUN apk add --no-cache --update \
+  bzip2-dev \
+  enchant2-dev \
+  libpng-dev \
+  gmp-dev \
+  imap-dev \
+  icu-dev \
+  openldap-dev \
+  freetds-dev \
+  libxml2-dev \
+  tidyhtml-dev  \
+  libxslt-dev \
+  libzip-dev \
+  musl-dev
 
-RUN docker-php-ext-configure intl --enable-intl
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install -j$(nproc) gd
-RUN docker-php-ext-install pdo
-RUN docker-php-ext-install mysqli pdo_mysql
-RUN docker-php-ext-install intl iconv mbstring
-RUN docker-php-ext-install zip pcntl
-RUN docker-php-ext-install exif opcache
-RUN docker-php-source delete
+RUN docker-php-ext-install \
+  bcmath \
+  bz2 \
+  calendar \
+  exif \
+  gd \
+  gettext \
+  gmp \
+  imap \
+  intl \
+  ldap \
+  mysqli \
+  opcache \
+  pcntl \
+  pdo_mysql \
+  xsl \
+  zip
 
-#Установка composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+#Installing composer
+RUN curl -sS https://getcomposer.org/installer -o composer-setup.php
+RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+RUN rm -rf composer-setup.php
 
-#Установка redis
-RUN pecl install -o -f redis \
-&&  rm -rf /tmp/pear \
-&&  docker-php-ext-enable redis
+#Installing redis
+RUN apk add --no-cache pcre-dev $PHPIZE_DEPS \
+        && pecl install redis \
+        && docker-php-ext-enable redis.so
 
-#Install xdebug
-RUN pecl install xdebug && docker-php-ext-enable xdebug
+#Installing xdebug
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS
+RUN apk add --update linux-headers
+RUN pecl install xdebug-3.1.5
+RUN docker-php-ext-enable xdebug
+RUN apk del -f .build-deps
 
-#Install supervisor
-#RUN apt-get install -y supervisor
+RUN rm -rf /tmp/* /var/cache/apk/*
+
+WORKDIR /var/www/your-project
 
 ARG docker_user
 ENV user=${docker_user}
-RUN useradd -o -u 1000 -g www-data -m -s /bin/bash ${user}
+
+RUN adduser -D -u 1000 ${user}
+RUN addgroup ${user} www-data
 
 RUN chown -R www-data:www-data /var/www/
 RUN chmod 777 -R /tmp && chmod o+t -R /tmp
 
-WORKDIR /var/www/project.local
+RUN mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 
-COPY entrypoint.sh /home/entrypoint.sh
-RUN tr -d '\015' </home/entrypoint.sh >/home/entrypoints.sh
-RUN chmod +x /home/entrypoints.sh
-entrypoint "/home/entrypoints.sh"
+COPY ./conf.d /usr/local/etc/php/conf.d
+
+USER ${user}
