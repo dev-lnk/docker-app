@@ -25,6 +25,12 @@
     DB_USERNAME=my_database
     DB_PASSWORD=12345
 ````
+12) 
+````
+REDIS_HOST=redis-your-project
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+````
 13) Изменить APP_URL в .env
 14) Запустить docker-compose up --build -d, построитcя проект с laravel
 
