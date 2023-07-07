@@ -13,7 +13,9 @@ RUN apk add --no-cache --update \
   tidyhtml-dev  \
   libxslt-dev \
   libzip-dev \
-  musl-dev
+  musl-dev \
+  openrc
+  #supervisor
 
 RUN docker-php-ext-install \
   bcmath \
@@ -61,10 +63,22 @@ RUN adduser -D -u 1000 ${user}
 RUN addgroup ${user} www-data
 
 RUN chown -R www-data:www-data /var/www/
+
+#RUN mkdir -p /etc/supervisor/conf.d \
+# && mkdir -p /var/log/supervisor
+
 RUN chmod 777 -R /tmp && chmod o+t -R /tmp
+RUN chmod 777 -R /var/log && chmod o+t -R /var/log
+RUN chmod 777 -R /var/run && chmod o+t -R /var/run
 
 RUN mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 
 COPY ./conf.d /usr/local/etc/php/conf.d
+
+#COPY supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+
+COPY entrypoint.sh /home/entrypoint.sh
+RUN chmod 755 /home/entrypoint.sh
+CMD ["/home/entrypoint.sh"]
 
 USER ${user}
