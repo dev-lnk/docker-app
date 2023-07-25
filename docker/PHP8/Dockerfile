@@ -3,7 +3,6 @@ FROM php:8.1-fpm-alpine
 RUN apk add --no-cache --update \
   bzip2-dev \
   enchant2-dev \
-  libpng-dev \
   gmp-dev \
   imap-dev \
   icu-dev \
@@ -14,6 +13,8 @@ RUN apk add --no-cache --update \
   libxslt-dev \
   libzip-dev \
   musl-dev \
+  jpeg-dev \
+  libpng-dev \
   openrc
   #supervisor
 
@@ -33,7 +34,9 @@ RUN docker-php-ext-install \
   pcntl \
   pdo_mysql \
   xsl \
-  zip
+  zip \
+  && docker-php-ext-configure gd --with-jpeg \
+  && docker-php-ext-install -j$(nproc) gd
 
 #Installing composer
 RUN curl -sS https://getcomposer.org/installer -o composer-setup.php
@@ -79,6 +82,6 @@ COPY ./conf.d /usr/local/etc/php/conf.d
 
 COPY entrypoint.sh /home/entrypoint.sh
 RUN chmod 755 /home/entrypoint.sh
-CMD ["/home/entrypoint.sh"]
+ENTRYPOINT ["/home/entrypoint.sh"]
 
 USER ${user}
