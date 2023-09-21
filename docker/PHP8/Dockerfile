@@ -18,25 +18,22 @@ RUN apk add --no-cache --update \
   openrc
   #supervisor
 
-RUN docker-php-ext-install \
-  bcmath \
-  bz2 \
-  calendar \
-  exif \
-  gd \
-  gettext \
-  gmp \
-  imap \
-  intl \
-  ldap \
-  mysqli \
-  opcache \
-  pcntl \
-  pdo_mysql \
-  xsl \
-  zip \
-  && docker-php-ext-configure gd --with-jpeg \
-  && docker-php-ext-install -j$(nproc) gd
+RUN docker-php-ext-configure intl --enable-intl
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+
+RUN docker-php-ext-install -j$(nproc) gd \
+    pdo \
+    mysqli  \
+    pdo_mysql  \
+    intl  \
+    iconv  \
+    mbstring  \
+    zip  \
+    pcntl \
+    exif  \
+    opcache \
+    soap \
+    && docker-php-source delete
 
 #Installing composer
 RUN curl -sS https://getcomposer.org/installer -o composer-setup.php
