@@ -1,4 +1,5 @@
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
+.PHONY: build rebuild rebuild-app up migrate migrate-rollback migrate-fresh migration route-list test composer-install composer-update composer-du npm-install npm-update npm-build npm-host
 app := app-conainer
 path := app-path
 app-npm := npm-conainer
