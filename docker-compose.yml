@@ -4,9 +4,9 @@ networks:
  custom_network:
 
 services:
-  nginx-your-project:
+  nginx-laravel-app:
     build: ./docker/Nginx
-    container_name: nginx-your-project
+    container_name: nginx-laravel-app
     ports:
       - ${LOCAL_WEB_PORT}:${APP_WEB_PORT}
     volumes:
@@ -14,26 +14,26 @@ services:
       - ./docker/Nginx/core:/etc/nginx/
       - ./docker/Nginx/logs:/var/log/nginx/
     depends_on:
-      - php-your-project
+      - php-laravel-app
     networks:
       - custom_network
 
-  php-your-project:
+  php-laravel-app:
     build:
       context: ./docker/PHP8
       args:
         docker_user: ${DOCKER_USER}
-    container_name: php-your-project
+    container_name: php-laravel-app
     volumes:
       - ${LOCAL_PATH_HOST}:${APP_PATH}
     depends_on:
-      - db-your-project
+      - db-laravel-app
     networks:
       - custom_network
 
-  db-your-project:
+  db-laravel-app:
     image: mariadb:11.0.2
-    container_name: db-your-project
+    container_name: db-laravel-app
     environment:
       MYSQL_ROOT_PASSWORD: 12345
     volumes:
@@ -44,18 +44,18 @@ services:
     networks:
       - custom_network
 
-  redis-your-project:
+  redis-laravel-app:
     image: redis:7.2-rc-alpine3.18
     command: ["redis-server", "--appendonly", "yes"]
-    container_name: redis-your-project
+    container_name: redis-laravel-app
     ports:
       - ${LOCAL_REDIS_PORT}:${APP_REDIS_PORT}
     networks:
       - custom_network
 
-  npm-your-project:
+  npm-laravel-app:
     build: ./docker/Node
-    container_name: npm-your-project
+    container_name: npm-laravel-app
     volumes:
       - ${LOCAL_PATH_HOST}:${APP_PATH}:cached
       - ${LOCAL_PATH_HOST}.env:${APP_PATH}/.env

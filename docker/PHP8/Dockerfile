@@ -1,4 +1,4 @@
-FROM php:8.1-fpm-alpine
+FROM php:8.1-fpm-alpine3.18
 
 RUN apk add --no-cache --update \
   bzip2-dev \
@@ -15,24 +15,28 @@ RUN apk add --no-cache --update \
   musl-dev \
   jpeg-dev \
   libpng-dev \
+  oniguruma-dev \
+  freetype  \
+  libpng  \
+  libjpeg-turbo  \
+  freetype-dev  \
+  libjpeg-turbo-dev \
   openrc
   #supervisor
-
-RUN docker-php-ext-configure intl --enable-intl
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
 RUN docker-php-ext-install -j$(nproc) gd \
     pdo \
     mysqli  \
     pdo_mysql  \
     intl  \
-    iconv  \
     mbstring  \
     zip  \
     pcntl \
     exif  \
     opcache \
     soap \
+    && docker-php-ext-configure intl --enable-intl \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-source delete
 
 #Installing composer
@@ -54,7 +58,7 @@ RUN apk del -f .build-deps
 
 RUN rm -rf /tmp/* /var/cache/apk/*
 
-WORKDIR /var/www/your-project
+WORKDIR /var/www/laravel-app
 
 ARG docker_user
 ENV user=${docker_user}
