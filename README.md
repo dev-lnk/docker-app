@@ -15,13 +15,8 @@
 Установка laravel:
 
 9) Выполнить команду sudo make laravel-install или выполнить установку Laravel в контейнере php-laravel-app вручную
-10) Скопировать настройки докера из файла .env-docker в файл .env
-----
-
-Пересобрать контейнер<br> 
-<code>docker-compose up -d --force-recreate --no-deps --build service_name</code>
-
-Для работы vite необходимо добавить в vite.config.js:
+10) Скопировать настройки докера из файла .env-docker в файл .env если была установка через команду make
+11) Для работы vite необходимо добавить в vite.config.js:
 
 ````
 export default defineConfig({
@@ -33,10 +28,5 @@ export default defineConfig({
     },
     ...
 ````
-
-<p>NPM (работа из консоли)</p>
-<code>docker-compose run --rm npm-laravel-app install</code><br>
-<code>docker-compose run --rm npm-laravel-app run build</code><br>
-<code>docker-compose run --rm --service-ports npm-laravel-app run dev --host</code><br>
 
 
