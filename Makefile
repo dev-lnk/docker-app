@@ -21,6 +21,12 @@ laravel-install:
 	rm -r .env.example
 	rm .gitignore
 	mv laravel/* .
+	mv laravel/.editorconfig .
+	mv laravel/.env .
+	mv laravel/.env.example .
+	mv laravel/.gitattributes .
+	mv laravel/.gitignore .
+	rm -r laravel
 
 #laravel
 migrate:
