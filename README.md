@@ -1,26 +1,42 @@
-Быстрая установка (необхоимо чтобы в вашей ОС был установлен Makefile):
-1) Переименовать .env.example -> .env
-2) make build (поднимет все контейнеры)
-Открыть в браузере http://localhost и проверить что все работает
-4) sudo make laravel-install
-Открыть в браузере http://localhost и проверить что работает Laravel
-5) Скопировать настройки из файла .env-docker в файл .env для работы докера
+<h2>Docker Compose для приложения на Laravel:</h2>
+<ul>
+    <li>PHP 8.1 (php:8.1-fpm-alpine3.18)</li>
+    <li>Nginx (nginx:1.25.1-alpine)</li>
+    <li>Mariadb 11.0.2</li>
+    <li>Node (node:alpine3.18)</li>
+</ul>
 
-Установка (если необходимо изменить название приложения и пути):
-1) .env.example -> .env 
-2) .env - указать путь до проекта APP_PATH
-3) docker/PHP8/Dockerfile - указать WORKDIR такой же как APP_PATH
-4) docker-compose.yml - Заменить custom_network если нужно
-5) docker-compose.yml - Заменить laravel-app в названиях контейнерах если нужно
-6) docker/Nginx/core/conf.d/default.conf - изменит директиву root на основе APP_PATH (laravel-app по умолчанию)
-7) docker/Nginx/core/conf.d/default.conf - fastcgi_pass должен называться так же как контейнер php
-Например: fastcgi_pass php-laravel-app:9000; 
-8) docker/dump/mysql-init.sql - заменить my_database на свою базу
-На данном этапе можно выполнить docker-compose up --build -d или make build
-Если всё пройдет успешно и проект откроется по адресу localhost.
-Установка laravel:
-9) Выполнить команду sudo make laravel-install или выполнить установку Laravel в контейнере php-laravel-app вручную
-10) Скопировать настройки докера из файла .env-docker в файл .env если была установка через команду make
+<h2>Установка</h2>
+По умолчанию контейнер с PHP называется laravel-app, путь до приложения внутри контейнера - /var/www/laravel-app<br><br>
+
+В файле docker/dump/mysql-init.sql настроить базу данных и пользователя, по умолчанию в файле используются:
+<ul>
+    <li>Database: my_database</li>
+    <li>User: my_database</li>
+    <li>Password: 12345</li>
+</ul>
+
+<h3>Установка с помощью Makefile</h3>
+
+1) Переименовать .env.example -> .env и изменить DOCKER_USER и порты по желанию
+2) Выполнить <code>make build</code> - создание контейнеров<br>
+Открыть в браузере http://localhost и проверить что все работает
+4) Выполнить <code>sudo make laravel-install</code> - устновка последней версии Laravel с помощью Composer<br>
+Открыть в браузере http://localhost и проверить что работает фреймворк Laravel
+5) Скопировать настройки из файла .env-docker в файл .env для работы докера, удалить .env-docker
+6) В .env указать настройки подключения к mysql, если были изменены в mysql-init.sql
+
+<h3>Ручная установка</h3>
+
+1) Переименовать .env.example -> .env и изменить DOCKER_USER и порты по желанию
+2) Выполнить <code>docker-compose up --build -d</code><br>
+  Открыть в браузере http://localhost и проверить что все работает  
+3) Перейти в контейнер laravel-app
+4) В контейнере laravel-app выполнить <code>composer create-project laravel/laravel laravel</code>
+5) Удалить папку public из текущего каталога
+6) Из корневого .env скопировать настройки докера в файл laravel/.env
+6) Переместить все файлы из директории laravel в корневую директорию с заменой файлов
+7) В .env указать настройки подключения к mysql, если были изменены в mysql-init.sql
 
 
 Для работы vite необходимо добавить в vite.config.js:
