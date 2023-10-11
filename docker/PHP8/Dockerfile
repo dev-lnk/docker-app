@@ -24,6 +24,9 @@ RUN apk add --no-cache --update \
   openrc
   #supervisor
 
+RUN docker-php-ext-configure intl --enable-intl
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+
 RUN docker-php-ext-install -j$(nproc) gd \
     pdo \
     mysqli  \
@@ -35,8 +38,6 @@ RUN docker-php-ext-install -j$(nproc) gd \
     exif  \
     opcache \
     soap \
-    && docker-php-ext-configure intl --enable-intl \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-source delete
 
 #Installing composer
