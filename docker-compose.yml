@@ -1,7 +1,7 @@
 version: '3.8'
 
 networks:
- custom_network:
+ custom-network:
 
 services:
   nginx-laravel-app:
@@ -16,7 +16,7 @@ services:
     depends_on:
       - php-laravel-app
     networks:
-      - custom_network
+      - custom-network
 
   php-laravel-app:
     build:
@@ -29,7 +29,7 @@ services:
     depends_on:
       - db-laravel-app
     networks:
-      - custom_network
+      - custom-network
 
   db-laravel-app:
     image: mariadb:11.0.2
@@ -42,7 +42,7 @@ services:
     ports:
       - ${LOCAL_MYSQL_PORT}:${APP_MYSQL_PORT}
     networks:
-      - custom_network
+      - custom-network
 
   redis-laravel-app:
     image: redis:7.2-rc-alpine3.18
@@ -51,7 +51,7 @@ services:
     ports:
       - ${LOCAL_REDIS_PORT}:${APP_REDIS_PORT}
     networks:
-      - custom_network
+      - custom-network
 
   npm-laravel-app:
     build: ./docker/Node
@@ -65,4 +65,4 @@ services:
     ports:
       - ${VITE_PORT}:${VITE_PORT}
     networks:
-      - custom_network
+      - custom-network

@@ -15,6 +15,6 @@ yarn-error.log
 /.vscode
 .env
 #docker
-/docker/Nginx/Logs
+/docker/Nginx/logs
 /docker/MySQL
 /docker/Redis
