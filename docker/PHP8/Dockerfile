@@ -69,6 +69,7 @@ RUN addgroup ${user} www-data
 
 RUN chown -R www-data:www-data /var/www/
 
+##For supervisor
 #RUN mkdir -p /etc/supervisor/conf.d \
 # && mkdir -p /var/log/supervisor
 
@@ -80,10 +81,10 @@ RUN mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 
 COPY ./conf.d /usr/local/etc/php/conf.d
 
+##For supervisor
 #COPY supervisor/supervisord.conf /etc/supervisor/supervisord.conf
-
-COPY entrypoint.sh /home/entrypoint.sh
-RUN chmod 755 /home/entrypoint.sh
-ENTRYPOINT ["/home/entrypoint.sh"]
+#COPY entrypoint.sh /home/entrypoint.sh
+#RUN chmod 755 /home/entrypoint.sh
+#ENTRYPOINT ["/home/entrypoint.sh"]
 
 USER ${user}
