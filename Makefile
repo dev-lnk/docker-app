@@ -12,6 +12,8 @@ rebuild-app:
 	docker-compose up -d --force-recreate --no-deps --build $(app)
 up:
 	docker-compose -f docker-compose.yml up -d $(c)
+it:
+	docker exec -it $(app) /bin/bash
 laravel-install:
 	docker exec $(app) composer create-project laravel/laravel laravel
 	mv .env .env-docker

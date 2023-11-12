@@ -21,6 +21,7 @@ RUN apk add --no-cache --update \
   libjpeg-turbo  \
   freetype-dev  \
   libjpeg-turbo-dev \
+  bash \
   openrc
   #supervisor
 
