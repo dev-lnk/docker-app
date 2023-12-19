@@ -11,8 +11,8 @@ services:
       - ${LOCAL_WEB_PORT}:${APP_WEB_PORT}
     volumes:
       - ${LOCAL_PATH_HOST}:${APP_PATH}
-      - ./docker/Nginx/core:/etc/nginx/
-      - ./docker/Nginx/logs:/var/log/nginx/
+      - ./docker/volumes/Nginx/core:/etc/nginx/
+      - ./docker/volumes/Nginx/logs:/var/log/nginx/
     depends_on:
       - php-laravel-app
     networks:
@@ -37,8 +37,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 12345
     volumes:
-      - ./docker/MySQL:/var/lib/mysql
-      - ./docker/dump:/docker-entrypoint-initdb.d
+      - ./docker/volumes/MySQL/lib:/var/lib/mysql
+      - ./docker/volumes/MySQL/dump:/docker-entrypoint-initdb.d
     ports:
       - ${LOCAL_MYSQL_PORT}:${APP_MYSQL_PORT}
     networks:

@@ -51,12 +51,12 @@ RUN apk add --no-cache pcre-dev $PHPIZE_DEPS \
         && pecl install redis \
         && docker-php-ext-enable redis.so
 
-#Installing xdebug
-RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS
-RUN apk add --update linux-headers
-RUN pecl install xdebug-3.1.5
-RUN docker-php-ext-enable xdebug
-RUN apk del -f .build-deps
+##Installing xdebug
+#RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS
+#RUN apk add --update linux-headers
+#RUN pecl install xdebug-3.3.1
+#RUN docker-php-ext-enable xdebug
+#RUN apk del -f .build-deps
 
 RUN rm -rf /tmp/* /var/cache/apk/*
 
