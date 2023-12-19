@@ -9,7 +9,7 @@
 <h2>Установка</h2>
 По умолчанию контейнер с PHP называется laravel-app, путь до приложения внутри контейнера - /var/www/laravel-app<br><br>
 
-В файле docker/dump/mysql-init.sql настроить базу данных и пользователя, по умолчанию в файле используются:
+В файле docker/volumes/MySQL/dump/mysql-init.sql настроить базу данных и пользователя, по умолчанию в файле используются:
 <ul>
     <li>Database: my_database</li>
     <li>User: my_database</li>
