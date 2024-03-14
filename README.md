@@ -1,9 +1,9 @@
 <h2>Docker Compose для приложения на Laravel:</h2>
 <ul>
-    <li>PHP 8.1 (php:8.1-fpm-alpine3.18)</li>
-    <li>Nginx (nginx:1.25.1-alpine)</li>
-    <li>Mariadb 11.0.2</li>
-    <li>Node (node:alpine3.18)</li>
+    <li>PHP 8.3.3 (php:8.3.3-fpm-alpine3.18)</li>
+    <li>Nginx (nginx:1.25.4-alpine)</li>
+    <li>Mariadb 11.2.3 (mariadb:11.2.3)</li>
+    <li>Node (node:21.7.1-alpine3.18)</li>
 </ul>
 
 <h2>Установка</h2>

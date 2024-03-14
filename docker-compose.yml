@@ -32,7 +32,7 @@ services:
       - custom-network
 
   db-laravel-app:
-    image: mariadb:11.0.2
+    image: mariadb:11.2.3
     container_name: db-laravel-app
     environment:
       MYSQL_ROOT_PASSWORD: 12345
@@ -45,7 +45,7 @@ services:
       - custom-network
 
   redis-laravel-app:
-    image: redis:7.2-rc-alpine3.18
+    image: redis:7.2.4-alpine3.19
     command: ["redis-server", "--appendonly", "yes"]
     container_name: redis-laravel-app
     ports:

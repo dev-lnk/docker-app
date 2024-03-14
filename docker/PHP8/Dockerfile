@@ -1,4 +1,4 @@
-FROM php:8.1-fpm-alpine3.18
+FROM php:8.3.3-fpm-alpine3.18
 
 RUN apk add --no-cache --update \
   bzip2-dev \
