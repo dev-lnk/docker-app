@@ -1,8 +1,8 @@
 <h2>Docker Compose для приложения на Laravel:</h2>
 <ul>
-    <li>PHP 8.3.3 (php:8.3.3-fpm-alpine3.18)</li>
+    <li>PHP 8.3.4 (php:8.3.4-fpm)</li>
     <li>Nginx (nginx:1.25.4-alpine)</li>
-    <li>Mariadb 11.2.3 (mariadb:11.2.3)</li>
+    <li>MySQL 8.0 (mysql:8.0.33)</li>
     <li>Node (node:21.7.1-alpine3.18)</li>
 </ul>
 
@@ -20,9 +20,9 @@
 
 1) Переименовать .env.example -> .env и изменить DOCKER_USER и порты по желанию
 2) Выполнить <code>make build</code> - создание контейнеров<br>
-Открыть в браузере http://localhost и проверить что все работает
+   Открыть в браузере http://localhost и проверить что все работает
 4) Выполнить <code>sudo make laravel-install</code> - устновка последней версии Laravel с помощью Composer<br>
-Открыть в браузере http://localhost и проверить что работает фреймворк Laravel
+   Открыть в браузере http://localhost и проверить что работает фреймворк Laravel
 5) Скопировать настройки из файла .env-docker в файл .env для работы докера, удалить .env-docker
 6) В .env указать настройки подключения к mysql, если были изменены в mysql-init.sql
 
@@ -30,7 +30,7 @@
 
 1) Переименовать .env.example -> .env и изменить DOCKER_USER и порты по желанию
 2) Выполнить <code>docker-compose up --build -d</code><br>
-  Открыть в браузере http://localhost и проверить что все работает  
+   Открыть в браузере http://localhost и проверить что все работает
 3) Перейти в контейнер laravel-app
 4) В контейнере laravel-app выполнить <code>composer create-project laravel/laravel laravel</code>
 5) Удалить папку public из текущего каталога

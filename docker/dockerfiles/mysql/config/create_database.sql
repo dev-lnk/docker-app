@@ -8,5 +8,3 @@ GRANT ALL PRIVILEGES ON `my_database_test`.* TO 'my_database'@'%';
 
 GRANT SELECT  ON `information\_schema`.* TO 'my_database'@'%';
 FLUSH PRIVILEGES;
-
-SET GLOBAL time_zone = 'Europe/Moscow';
